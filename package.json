@@ -1,0 +1,28 @@
+{
+  "name": "lets_phish",
+  "version": "1.0.0",
+  "description": "Backend for the LetsPhish Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amanaryan/lets_phish.git"
+  },
+  "keywords": [
+    "let's",
+    "encrypt",
+    "phishing",
+    "alert"
+  ],
+  "author": "AMAN ARYAN",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amanaryan/lets_phish/issues"
+  },
+  "homepage": "https://github.com/amanaryan/lets_phish#readme",
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
