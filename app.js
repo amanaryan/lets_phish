@@ -1,12 +1,20 @@
 const express = require('express')
 const app = express()
-
+const path    = require("path");
 
 app.get('/',function(req,res){
 
 res.send('home page here');
 
 });
+
+
+app.get('/livesearch',function(req,res){
+
+ res.sendFile(path.join(__dirname+'/livesearch.html'));
+
+});
+
 
 app.get('/api/getstatus/:domain', function (req, res) {
   var domain = req.params.domain;
@@ -16,6 +24,8 @@ app.get('/api/getstatus/:domain', function (req, res) {
     if(domain.length<3 || domain.length > 75){
 
       console.log("Invalid Domain: "+ domain);
+res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-  With, Content-Type, Accept");
 
       res.json({error:true,issuer_letsencrypt:'unknown'});
 
@@ -27,20 +37,8 @@ app.get('/api/getstatus/:domain', function (req, res) {
 
 
                     const exec = require('child_process').exec;
-                    const testscript = exec('gtimeout 3 sh counter.sh '+domain);
+                    const testscript = exec('timeout 3 sh counter.sh '+domain);
 
-                    testscript.on('exit', function (code) {
-                        // exit code is code
-                        console.log('exit code was '+ code);
-                        // if code is 124 means the request timed out, meaning probably the domain didn't resolve
-
-                        if(code==124){
-
-                            res.json({error:true,issuer_letsencrypt:'unknown'});
-
-                        }
-
-                      });
 
                     testscript.stdout.on('data', function(data){
                     console.log('data received: '+data);
@@ -51,10 +49,18 @@ app.get('/api/getstatus/:domain', function (req, res) {
 
                     if(isNumber(data)){
                       console.log("number detected");
-                      if(data>0){
-                        res.json({error:false,issuer_letsencrypt:true});
+                      
+			if(parseInt(data)>0){
+			console.log(data);
+res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-  With, Content-Type, Accept");
+                      
+  res.json({error:false,issuer_letsencrypt:true});
                       }else{
-                        res.json({error:false,issuer_letsencrypt:false});
+res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-  With, Content-Type, Accept");
+                        
+res.json({error:false,issuer_letsencrypt:false});
                       }
                     }
 
@@ -63,7 +69,10 @@ app.get('/api/getstatus/:domain', function (req, res) {
                     testscript.stderr.on('data', function(data){
                       console.log('error received:')
                       console.log(data);
-                      res.json({error:true,issuer_letsencrypt:'unknown'});
+res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-  With, Content-Type, Accept");
+                      
+res.json({error:true,issuer_letsencrypt:'unknown'});
                     });
 
 
@@ -84,6 +93,12 @@ app.get('/api/getstatus/:domain', function (req, res) {
 
 
 
+});
+
+
+app.get('/example',function(req,res){
+  res.sendFile(path.join(__dirname+'/example.html'));
+  //__dirname : It will resolve to your project folder.
 });
 
 
